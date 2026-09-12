@@ -17,19 +17,8 @@ results, not invented ones.
 
 Two short walkthroughs:
 
-| | |
-|---|---|
-| **1. Uploading a dataset** | `docs/demo-upload.mp4` |
-| **2. Asking business questions** | `docs/demo-questions.mp4` |
-
-> GitHub doesn't play a video from a plain relative link like the
-> table above — it only auto-embeds a video that was uploaded
-> *through* GitHub's own editor. To make these actually playable on
-> the repo page: open this file in the GitHub web editor (or a new
-> Issue/PR comment), drag each `.mp4` into the text box, and GitHub
-> will replace it with a `https://github.com/user-attachments/...`
-> link that plays inline. Paste those two links in place of the
-> table above once you've done that, then delete this note.
+- [**Uploading a dataset**](https://github.com/MennaM2/AI-Powered-Business-Analysis-Agent/releases/download/v1.demo/upload.mp4)
+- [**Asking business questions**](https://github.com/MennaM2/AI-Powered-Business-Analysis-Agent/releases/download/v1.demo/questions.mp4)
 
 ---
 
