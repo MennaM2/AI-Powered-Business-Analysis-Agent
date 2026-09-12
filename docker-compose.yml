@@ -1,0 +1,38 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "8000:8000"
+    environment:
+      - AGENT_MODEL=${AGENT_MODEL:-gpt-oss:20b-cloud}
+      - OLLAMA_HOST=${OLLAMA_HOST:-http://host.docker.internal:11434}
+      - UPLOAD_DIR=data/uploads
+      - OUTPUT_DIR=outputs
+      - SMTP_HOST=${SMTP_HOST:-}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+      - SMTP_FROM=${SMTP_FROM:-}
+    volumes:
+      - ./data/uploads:/app/data/uploads
+      - ./outputs:/app/outputs
+      - ./.vector_cache:/app/.vector_cache
+    # Uses Ollama running on the host machine.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://api:8000
+    volumes:
+      - ./data/uploads:/app/data/uploads
+      - ./outputs:/app/outputs
+    depends_on:
+      - api
