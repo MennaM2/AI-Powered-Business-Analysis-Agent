@@ -21,6 +21,7 @@ results, not invented ones.
   <img src="docs/screenshots/ui-chat.png" width="32%" alt="Chat interface answering a business question with a chart and tools_used" />
   <img src="docs/screenshots/ui-data.png" width="32%" alt="Dataset preview after uploading a CSV" />
   <img src="docs/screenshots/ui-report.png" width="32%" alt="Generated business report with PDF/Word/HTML/Markdown download buttons" />
+  <img src="docs/screenshots/ui-response.png" width="32%"  />
 </p>
 
 ## Contents
