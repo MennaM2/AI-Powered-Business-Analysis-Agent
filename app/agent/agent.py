@@ -1330,7 +1330,11 @@ def run_agent(
                 last_plot_path = result["file_path"]
 
             if (
-                tool_name in ("generate_report", "deliver_business_report")
+                tool_name in (
+                    "generate_report",
+                    "generate_business_report",
+                    "deliver_business_report",
+                )
                 and isinstance(result, dict)
                 and "error" not in result
             ):

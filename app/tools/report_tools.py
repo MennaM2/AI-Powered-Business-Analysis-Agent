@@ -212,54 +212,109 @@ def _markdown_to_html(markdown_text: str) -> str:
     return "\n".join(html_lines)
 
 
+_PDF_INK = (30, 41, 59)          # body text
+_PDF_HEADING = (27, 58, 75)      # #1B3A4B - matches the app's accent color
+_PDF_MUTED = (100, 116, 139)     # italic notes / footer
+_PDF_RULE = (226, 232, 240)      # light divider under ## headings
+
+
+class _ReportPDF(FPDF):
+    """FPDF subclass so every page automatically gets a thin footer
+    rule and page number - the missing polish that made the plain
+    version feel like a text dump rather than a document."""
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_draw_color(*_PDF_RULE)
+        self.line(18, self.get_y(), self.w - 18, self.get_y())
+        self.set_font("Helvetica", "I", 8)
+        self.set_text_color(*_PDF_MUTED)
+        self.cell(0, 10, f"Page {self.page_no()}", align="C")
+
+
 def _markdown_to_pdf(markdown_text: str, path: str) -> None:
     """Render the same simple markdown subset used for the HTML
     report (#, ##, - bullets, _italic_ lines, plain paragraphs) into
-    a real PDF file, so the report is downloadable/shareable as a
-    normal document instead of only .md/.html.
+    a real, readably-formatted PDF: colored section headings with a
+    divider rule, breathing room between sections, and an indented
+    block for bullets - instead of every line packed at the same
+    size and spacing, which is what made the first version feel like
+    everything was "stuck together" with nothing standing out.
 
     Uses fpdf2 - pure Python, no system-level dependencies (unlike
     e.g. WeasyPrint, which needs Cairo/Pango installed separately) -
     so this works the same on any machine that can `pip install`.
     """
-    pdf = FPDF(format="A4")
-    pdf.set_auto_page_break(auto=True, margin=18)
+    BODY_X = 18
+    BULLET_X = 24  # indented block so bullets read as a distinct group
+
+    pdf = _ReportPDF(format="A4")
+    pdf.set_auto_page_break(auto=True, margin=22)
     pdf.add_page()
     pdf.set_margins(18, 18, 18)
+    pdf.set_text_color(*_PDF_INK)
+
+    first_heading = True
 
     for raw_line in markdown_text.split("\n"):
         line = raw_line.strip()
 
         if not line:
-            pdf.set_x(pdf.l_margin)
-            pdf.ln(3)
             continue
 
-        # Defensive: fpdf2 can leave the cursor at the right margin
-        # after certain multi_cell wraps (a line that fills the
-        # width exactly), which then raises "Not enough horizontal
-        # space" on the next call. Always re-anchor to the left
-        # margin before writing, regardless of where the previous
-        # line left the cursor.
-        pdf.set_x(pdf.l_margin)
+        pdf.set_x(BODY_X)
 
         if line.startswith("# "):
-            pdf.set_font("Helvetica", "B", 18)
-            pdf.multi_cell(0, 9, line[2:])
-            pdf.ln(2)
+            # Title band: large, colored, with a rule underneath and
+            # generous space below before the first section starts.
+            pdf.set_font("Helvetica", "B", 22)
+            pdf.set_text_color(*_PDF_HEADING)
+            pdf.multi_cell(0, 11, line[2:])
+            pdf.set_draw_color(*_PDF_HEADING)
+            pdf.set_line_width(0.6)
+            pdf.line(BODY_X, pdf.get_y() + 1, pdf.w - 18, pdf.get_y() + 1)
+            pdf.set_line_width(0.2)
+            pdf.ln(6)
+            pdf.set_text_color(*_PDF_INK)
+
         elif line.startswith("## "):
-            pdf.set_font("Helvetica", "B", 13)
+            # Real section break: extra space above (except right
+            # after the title), bold colored label, thin rule below
+            # so each section is visually distinct at a glance.
+            if not first_heading:
+                pdf.ln(4)
+            first_heading = False
+            pdf.set_x(BODY_X)
+            pdf.set_font("Helvetica", "B", 14)
+            pdf.set_text_color(*_PDF_HEADING)
             pdf.multi_cell(0, 8, line[3:])
-            pdf.ln(1)
+            pdf.set_draw_color(*_PDF_RULE)
+            pdf.set_line_width(0.3)
+            pdf.line(BODY_X, pdf.get_y() + 1, pdf.w - 18, pdf.get_y() + 1)
+            pdf.ln(4)
+            pdf.set_text_color(*_PDF_INK)
+
         elif line.startswith("- "):
+            # Hanging block: dash + text both sit at BULLET_X, with
+            # a small gap after each item instead of lines touching.
+            pdf.set_x(BULLET_X)
+            pdf.set_left_margin(BULLET_X)
             pdf.set_font("Helvetica", "", 11)
-            pdf.multi_cell(0, 6, f"-  {line[2:]}")
+            pdf.multi_cell(pdf.w - BULLET_X - 18, 6.5, f"-  {line[2:]}")
+            pdf.set_left_margin(BODY_X)
+            pdf.ln(1.5)
+
         elif line.startswith("_") and line.endswith("_") and len(line) > 1:
-            pdf.set_font("Helvetica", "I", 10)
+            pdf.set_font("Helvetica", "I", 9.5)
+            pdf.set_text_color(*_PDF_MUTED)
             pdf.multi_cell(0, 6, line[1:-1])
+            pdf.set_text_color(*_PDF_INK)
+            pdf.ln(2)
+
         else:
             pdf.set_font("Helvetica", "", 11)
-            pdf.multi_cell(0, 6, line)
+            pdf.multi_cell(0, 6.5, line)
+            pdf.ln(1.5)
 
     pdf.output(path)
 

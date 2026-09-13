@@ -1,5 +1,11 @@
 # AI-Powered Business Analysis & Automation Agent
 
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-backend-teal)
+![Streamlit](https://img.shields.io/badge/Streamlit-UI-red)
+![Ollama](https://img.shields.io/badge/Ollama-tool--calling%20LLM-black)
+![Tests](https://img.shields.io/badge/tests-55%2B%20passing-brightgreen)
+
 An agentic backend + UI that turns natural-language **business questions**
 about an uploaded CSV into real tool calls — SQL, statistics, trend
 analysis, anomaly detection, visualization, machine learning, and
@@ -10,6 +16,30 @@ results, not invented ones.
 > (dataset profiling + chat). That system is preserved and extended
 > here, not replaced: every original tool still works, and 7 new
 > tools + a FastAPI backend + tests were added on top of it.
+
+<p align="center">
+  <img src="docs/screenshots/ui-chat.png" width="49%" alt="Chat interface answering a business question with a chart and tools_used" />
+  <img src="docs/screenshots/ui-data.png" width="49%" alt="Dataset preview after uploading a CSV" />
+  <img src="docs/screenshots/ui-report.png" width="49%" alt="Generated business report with PDF/Word/HTML/Markdown download buttons" />
+</p>
+
+## Contents
+
+1. [What this is, and why it isn't "just a chatbot"](#1-what-this-is-and-why-it-isnt-just-a-chatbot)
+2. [Architecture](#2-architecture)
+3. [Available tools](#3-available-tools)
+4. [Structured outputs](#4-structured-outputs)
+5. [FastAPI backend](#5-fastapi-backend)
+6. [Reliability & safety](#6-reliability--safety)
+7. [Tech stack](#7-tech-stack)
+8. [Installation](#8-installation)
+9. [Environment variables](#9-environment-variables)
+10. [Testing](#10-testing)
+11. [Example prompts](#11-example-prompts)
+12. [Project structure](#12-project-structure)
+13. [Limitations](#13-limitations)
+14. [Future improvements](#14-future-improvements)
+15. [How this demonstrates the target skill set](#15-how-this-demonstrates-the-target-skill-set)
 
 ---
 
@@ -47,6 +77,10 @@ email, after `smtplib` confirms the send didn't raise).
 ---
 
 ## 2. Architecture
+
+<p align="center">
+  <img src="docs/screenshots/architecture-diagram.png" width="85%" alt="Streamlit to FastAPI to SQLite to Ollama architecture diagram" />
+</p>
 
 ```
 Streamlit UI (app.py)                 -- thin HTTP client, no agent logic
@@ -368,8 +402,8 @@ Interactive docs: `http://localhost:8000/docs`
 ## 8. Installation
 
 ```bash
-git clone <this repo>
-cd AI-Data-Analyst-Agent
+git clone https://github.com/MennaM2/AI-Powered-Business-Analysis-Agent.git
+cd AI-Powered-Business-Analysis-Agent
 python -m venv venv
 source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
@@ -473,7 +507,7 @@ Generate and save a business report, and email it to ops@company.com.
 ## 12. Project structure
 
 ```
-AI-Data-Analyst-Agent/
+AI-Powered-Business-Analysis-Agent/
 |-- app.py                     # Streamlit UI (thin API client)
 |-- app/
 |   |-- config.py              # env-driven settings
@@ -517,8 +551,10 @@ AI-Data-Analyst-Agent/
 
 ## 13. Limitations
 
-- Session memory is in-process only (not persistent, not multi-worker
-  safe) — documented tradeoff for a single-process portfolio deploy.
+- Sessions persist to a single SQLite file (`app/agent/memory.py`) -
+  fine for a single-process portfolio deploy, but a multi-worker
+  production setup would need Postgres/Redis instead (see the note
+  under "Multiple datasets and SQL joins" above).
 - Column auto-detection (date/metric/category) is name- and
   dtype-based heuristics; it can pick the wrong column on unusual
   schemas, in which case pass the column names explicitly.
