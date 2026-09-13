@@ -18,8 +18,11 @@ results, not invented ones.
 > tools + a FastAPI backend + tests were added on top of it.
 
 <p align="center">
-  <img src="docs/screenshots/ui-chat.png" width="49%" alt="Chat interface answering a business question with a chart and tools_used" />
   <img src="docs/screenshots/ui-data.png" width="49%" alt="Dataset preview after uploading a CSV" />
+  <img src="docs/screenshots/ui-chat.png" width="49%" alt="Chat interface with a question being asked" />
+</p>
+<p align="center">
+  <img src="docs/screenshots/ui-response.png" width="49%" alt="Agent's answer to a business question" />
   <img src="docs/screenshots/ui-report.png" width="49%" alt="Generated business report with PDF/Word/HTML/Markdown download buttons" />
 </p>
 
