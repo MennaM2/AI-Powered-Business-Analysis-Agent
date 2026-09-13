@@ -82,7 +82,7 @@ email, after `smtplib` confirms the send didn't raise).
 ## 2. Architecture
 
 <p align="center">
-  <img src="docs/screenshots/architecture_diagram.png" width="85%" alt="Streamlit to FastAPI to SQLite to Ollama architecture diagram" />
+  <img src="docs/screenshots/architecture-diagram.png" width="85%" alt="Streamlit to FastAPI to SQLite to Ollama architecture diagram" />
 </p>
 
 ```
@@ -487,6 +487,35 @@ pytest tests/ -v
 The original manual smoke script (`test_agent.py` at the repo root)
 is preserved for a quick real-Ollama sanity check.
 
+### LLM evaluation harness (real model)
+
+`tests/` mocks the LLM on purpose - fast, deterministic, no Ollama
+dependency. `eval/eval_agent.py` is the opposite: it runs 11
+questions through the **real** agent -> **real** model -> real
+tools, and checks two things a unit test can't:
+
+1. **Tool grounding** - did the agent actually call a tool this
+   question requires, instead of answering from assumption?
+2. **Factual correctness** - does a number in its answer match a
+   ground-truth value computed independently with pandas/duckdb
+   directly from the CSV (not from the agent's own tools, so a bug
+   shared between the agent and the check can't hide itself)?
+
+Includes one adversarial case (asking about a column that doesn't
+exist in the dataset) to check the agent says so instead of inventing
+a value, and one case that only checks tool arguments -
+`train_model` actually being called with `feature_columns` set,
+which is the regression guard for the ML timeout bug described above.
+
+```bash
+python eval/eval_agent.py
+python eval/eval_agent.py --save eval/eval_results.json
+```
+
+Requires a reachable model (whatever `AGENT_MODEL` in `.env` points
+to) - this is an integration eval, not a fast unit test, and isn't
+run as part of `pytest tests/`.
+
 ---
 
 ## 11. Example prompts
@@ -598,5 +627,6 @@ AI-Powered-Business-Analysis-Agent/
 | **APIs** | `app/api/main.py` — FastAPI, Pydantic models, proper HTTP status codes |
 | **FastAPI** | Full backend with `/health /upload /chat /analyze /report`, tested via `TestClient` |
 | **Structured outputs** | API response schemas + orchestration-derived `tools_used`/`tool_log`, not LLM-guessed JSON |
+| **Prompt Engineering & LLM Evaluation** | `eval/eval_agent.py` - real model, real tools, checked against independent ground truth for tool grounding and factual correctness |
 | **Error handling** | Try/except around every I/O boundary, LLM-failure handling, SQL validation, iteration caps, never-fake-success automation |
 | **Python** | The whole thing |

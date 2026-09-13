@@ -1,113 +1,54 @@
 <html><head><meta charset='utf-8'>
 <title>Data Analysis Report</title></head><body>
 <h1>Business Analysis Report</h1>
-<p><em>Generated 2026-09-13 02:55:31</em></p>
+<p><em>Generated 2026-09-13 07:44:18</em></p>
 <h2>Executive Summary</h2>
 <ul>
 <li>'returned_at' has 90.0% missing values, which may bias any analysis using it.</li>
-<li>num_of_item is increasing overall (8016.67% total change).</li>
-<li>The sharpest drop in num_of_item was -89.11% in 2024-09-30.</li>
-<li>num_of_item moved from 13410.0 in 2024-08 to 1461.0 in 2024-09 (-89.11%).</li>
-<li>'Returned' had the steepest decline (-90.61%) between the two periods.</li>
-<li>6400 anomalies detected via IQR + Z-score (univariate).</li>
-<li>By num_of_item, 'Shipped' leads (54811.0) and 'Returned' trails (18039.0) among status.</li>
-<li>A baseline model predicts 'status' with 0.2187 accuracy; the top driver is 'numerical__order_id'.</li>
+<li>By order_id, 'Shipped' leads (2366887444.0) and 'Returned' trails (781806762.0) among status.</li>
 </ul>
 <h2>Key Metrics</h2>
 <ul>
 <li>Rows: 125083</li>
 <li>Columns: 9</li>
 <li>Duplicate rows: 0</li>
-<li>Metric analyzed: num_of_item</li>
-<li>Date column used: created_at</li>
+<li>Metric analyzed: order_id</li>
 <li>Grouping dimension: status</li>
 </ul>
 <h2>Trends</h2>
 <ul>
-<li>Overall direction for **num_of_item**: increasing</li>
-<li>Total change over the period: 8016.67%</li>
-<li>Largest single-period drop: -89.11% in 2024-09-30</li>
-<li>Largest single-period rise: 144.44% in 2019-02-28</li>
-</ul>
-<h2>Period Comparison</h2>
-<ul>
-<li>2024-08: 13410.0</li>
-<li>2024-09: 1461.0</li>
-<li>Change: -11949.0 (-89.11%, decrease)</li>
-</ul>
-<p>Fastest-growing status:</p>
-<ul>
-<li>Cancelled: -88.42%</li>
-<li>Shipped: -88.98%</li>
-<li>Processing: -89.07%</li>
-</ul>
-<p>Fastest-declining status:</p>
-<ul>
-<li>Returned: -90.61%</li>
-<li>Complete: -89.08%</li>
-<li>Processing: -89.07%</li>
+<li>No usable date/metric combination was found for trend analysis.</li>
 </ul>
 <h2>Anomalies</h2>
 <ul>
-<li>6400 anomalies detected using IQR + Z-score (univariate).</li>
-<li>{'row_index': 22, 'value': 4.0, 'date': '2024-03-31 01:43:00 UTC'}</li>
-<li>{'row_index': 60, 'value': 4.0, 'date': '2024-02-25 15:17:00 UTC'}</li>
-<li>{'row_index': 71, 'value': 4.0, 'date': '2020-01-16 15:16:00 UTC'}</li>
-<li>{'row_index': 75, 'value': 4.0, 'date': '2024-08-06 03:06:00 UTC'}</li>
-<li>{'row_index': 78, 'value': 4.0, 'date': '2024-01-15 13:30:00 UTC'}</li>
+<li>No significant anomalies detected.</li>
 </ul>
 <h2>Top / Bottom Performers</h2>
-<p>Top status by num_of_item (sum):</p>
+<p>Top status by order_id (sum):</p>
 <ul>
-<li>Shipped: 54811.0</li>
-<li>Complete: 45297.0</li>
-<li>Processing: 36089.0</li>
-<li>Cancelled: 27519.0</li>
-<li>Returned: 18039.0</li>
+<li>Shipped: 2366887444.0</li>
+<li>Complete: 1946028358.0</li>
+<li>Processing: 1548928853.0</li>
+<li>Cancelled: 1179289569.0</li>
+<li>Returned: 781806762.0</li>
 </ul>
-<p>Bottom status by num_of_item:</p>
+<p>Bottom status by order_id:</p>
 <ul>
-<li>Returned: 18039.0</li>
-<li>Cancelled: 27519.0</li>
-<li>Processing: 36089.0</li>
-<li>Complete: 45297.0</li>
-<li>Shipped: 54811.0</li>
-</ul>
-<h2>Predictive Signal</h2>
-<ul>
-<li>Target column: status</li>
-<li>Task type: classification</li>
-<li>accuracy: 0.2187</li>
-<li>precision: 0.2253</li>
-<li>recall: 0.2187</li>
-<li>f1_score: 0.2214</li>
-</ul>
-<p>Top features:</p>
-<ul>
-<li>numerical__order_id: 0.5348</li>
-<li>numerical__user_id: 0.4604</li>
-<li>numerical__num_of_item: 0.004</li>
-<li>categorical__gender_F: 0.0004</li>
-<li>categorical__gender_M: 0.0004</li>
+<li>Returned: 781806762.0</li>
+<li>Cancelled: 1179289569.0</li>
+<li>Processing: 1548928853.0</li>
+<li>Complete: 1946028358.0</li>
+<li>Shipped: 2366887444.0</li>
 </ul>
 <h2>Insights</h2>
 <ul>
 <li>'returned_at' has 90.0% missing values, which may bias any analysis using it.</li>
-<li>num_of_item is increasing overall (8016.67% total change).</li>
-<li>The sharpest drop in num_of_item was -89.11% in 2024-09-30.</li>
-<li>num_of_item moved from 13410.0 in 2024-08 to 1461.0 in 2024-09 (-89.11%).</li>
-<li>'Returned' had the steepest decline (-90.61%) between the two periods.</li>
-<li>6400 anomalies detected via IQR + Z-score (univariate).</li>
-<li>By num_of_item, 'Shipped' leads (54811.0) and 'Returned' trails (18039.0) among status.</li>
-<li>A baseline model predicts 'status' with 0.2187 accuracy; the top driver is 'numerical__order_id'.</li>
+<li>By order_id, 'Shipped' leads (2366887444.0) and 'Returned' trails (781806762.0) among status.</li>
 </ul>
 <h2>Recommendations</h2>
 <ul>
 <li>Investigate why 'returned_at' has a high missing rate before using it in reporting or modeling.</li>
-<li>Review what happened around 2024-09-30 - it had the largest period-over-period drop in num_of_item.</li>
-<li>Prioritize investigating 'Returned' - it declined -90.61% between the two most recent periods.</li>
-<li>Manually review the flagged anomalous rows for data-entry errors or genuinely unusual business events.</li>
-<li>Examine why 'Returned' underperforms other status on num_of_item, and whether 'Shipped' has practices worth replicating.</li>
+<li>Examine why 'Returned' underperforms other status on order_id, and whether 'Shipped' has practices worth replicating.</li>
 </ul>
 <h2>Limitations</h2>
 <ul>
