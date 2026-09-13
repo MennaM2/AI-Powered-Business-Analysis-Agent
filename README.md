@@ -82,7 +82,7 @@ email, after `smtplib` confirms the send didn't raise).
 ## 2. Architecture
 
 <p align="center">
-  <img src="docs/screenshots/architecture-diagram.png" width="85%" alt="Streamlit to FastAPI to SQLite to Ollama architecture diagram" />
+  <img src="docs/screenshots/architecture_diagram.png" width="85%" alt="Streamlit to FastAPI to SQLite to Ollama architecture diagram" />
 </p>
 
 ```
